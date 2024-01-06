@@ -40,6 +40,7 @@ Copy)
         # 那这个就是老古董x11的喽
         echo $Parsed_Code | xclip -selection c
     ;;
+    esac
 ;;
 esac
 
