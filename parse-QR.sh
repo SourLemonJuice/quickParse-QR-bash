@@ -13,13 +13,26 @@ TempFile_Path="/tmp/quick-QR-bash-TEMP"
 # 发通知时的应用名称
 App_Name="quick-QR-bash"
 
+Remove_Temp_Picture(){
+    # 如果临时文件存在，就删除图片文件
+    if [[ -f $TempFile_Path ]]; then
+        rm $TempFile_Path
+    fi
+}
+
+# 执行前删除可能的临时文件
+Remove_Temp_Picture
+
 # 启动截图，保存至临时文件夹 [--后台 --无通知 --自定义输出路径]
 spectacle $Capture_Mode --background --nonotify --output $TempFile_Path
+# 如果没有截图则退出(道理我都懂，但为什么没截图退出码还是 0 为什么啊啊啊w)
+[[ -f $TempFile_Path ]] || exit 1
 
 # 解析原始信息到 $Parsed_Code [--安静输出 --输出原始信息]
 Parsed_Code=$(zbarimg --quiet --raw $TempFile_Path)
 # 如果没检测到信息则退出
 if [ $? != 0 ]; then
+    # 发信息提醒
     notify-send --app-name=$App_Name "There's no QRcode in image"
     exit 1
 fi
@@ -44,8 +57,7 @@ Copy)
 ;;
 esac
 
-# 如果临时文件存在，就删除图片文件
-[[ -f $TempFile_Path ]] || exit 1
-rm $TempFile_Path
+# 清理临时文件
+Remove_Temp_Picture
 
 exit 0
