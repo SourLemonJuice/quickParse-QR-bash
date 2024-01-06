@@ -30,8 +30,16 @@ Notify_Action=$(notify-send --app-name=$App_Name --action Copy=Copy "$Parsed_Cod
 case $Notify_Action in
 # 复制以解析的信息
 Copy)
-    # wl-clipboard 是一个wayland下的剪贴板工具
-    wl-copy $Parsed_Code
+    # 检测正在使用的桌面gui程序，并选择对应的剪贴板工具
+    case $(echo $XDG_SESSION_TYPE) in
+    wayland)
+        # wl-clipboard 是一个wayland下的剪贴板工具
+        wl-copy $Parsed_Code
+    ;;
+    x11)
+        # 那这个就是老古董x11的喽
+        echo $Parsed_Code | xclip -selection c
+    ;;
 ;;
 esac
 
