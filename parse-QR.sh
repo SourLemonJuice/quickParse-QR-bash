@@ -8,7 +8,7 @@
 
 # configs
 Capture_Mode="--region"
-# 此处扩展名必须有效或者干脆没有听配置文件的，不然写不进去(尝试过 .imge~)
+# 此处扩展名必须有效或者干脆没有听配置文件的，不然写不进去(尝试过 .imge~)(我知道拼错了，就当个笑话放这里吧)
 TempFile_Path="/tmp/quick-QR-bash-TEMP"
 # 发通知时的应用名称
 App_Name="quick-QR-bash"
@@ -20,7 +20,7 @@ spectacle $Capture_Mode --background --nonotify --output $TempFile_Path
 Parsed_Code=$(zbarimg --quiet --raw $TempFile_Path)
 # 如果没检测到信息则退出
 if [ $? != 0 ]; then
-    notify-send --app-name=$App_Name "There's no QRcode in imge"
+    notify-send --app-name=$App_Name "There's no QRcode in image"
     exit 1
 fi
 
